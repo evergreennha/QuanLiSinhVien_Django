@@ -1,0 +1,64 @@
+{% extends 'hod_template/base_template.html' %}
+{% block page_title %}
+Sinh Viên Xin Nghỉ
+{% endblock page_title %}
+{% block main_content %}
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Sinh Viên Xin Nghỉ</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="table">
+                    <table class="table">
+                        <tr>
+                            <th>ID</th>
+                            <th>ID Sinh viên</th>
+                            <th>Tên sinh viên</th>
+                            <th>Ngày Nghỉ</th>
+                            <th>Lí do</th>
+                            <th>Đã xin lúc</th>
+                            <th>Đồng ý/Từ chối</th>
+                        </tr>
+                        {% for leave in leaves %}
+                        <tr>
+                            <td>{{ leave.id }}</td>
+                            <td>{{ leave.student_id.admin.id }}</td>
+                            <td>{{ leave.student_id.admin.first_name }} {{ leave.student_id.admin.last_name }}</td>
+                            <td>{{ leave.leave_date }}</td>
+                            <td>{{ leave.leave_massage }}</td>
+                            <td>{{ leave.created_at }}</td>
+                            <td>
+                                {% if leave.leave_status == 0 %}
+                                <a href="{% url 'student_approve_leave' leave_id=leave.id %}" class="btn btn-success" >Đồng ý</a>
+                                <a class="btn btn-danger" href="{% url 'student_disapprove_leave' leave_id=leave.id %}" >Từ chối</a>
+                                {% elif leave.leave_status == 1  %}
+                                 <button class="btn btn-warning" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Đã đồng ý</button>
+                                {% else %}
+                                <button class="btn btn-danger" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Đã từ chối</button>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+            </div>
+            <!-- /.card -->
+
+
+
+          </div>
+          </div>
+      </div>
+    </section>
+
+    <!-- /.content -->
+{% endblock main_content %}
